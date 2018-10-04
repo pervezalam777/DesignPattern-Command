@@ -1,26 +1,31 @@
-import { BasicCalculator } from "./calculator/basiccalculator";
-import { COMMAND_CONST } from "./commands/commandFactory";
+import { NewsAgencyFactory, NewsAgency } from "./newsagency/newsagency";
+import { Reporter, ReporterFactory } from "./reporter/reporter";
+import { Subscriber, SubscriberFactory } from "./subscribers/subscriber";
 
 class Bootstrap {
 
-    constructor(){ }
+    constructor(){ 
+
+    }
 
     public initialize(){
-        let basicCal:BasicCalculator = new BasicCalculator();
-        basicCal.initialize();
+       let timesOfIndia:NewsAgency = NewsAgencyFactory.create();
 
-        let value:number = basicCal.performOperation(COMMAND_CONST.ADDITION, 10);
-        value = basicCal.performOperation(COMMAND_CONST.ADDITION, 20);
-        console.log(value);
+       let reporterOne:Reporter = ReporterFactory.create();
+       reporterOne.attachTo(timesOfIndia);
 
-        value = basicCal.performOperation(COMMAND_CONST.MULTIPLY, 30);
-        console.log(value);
+       let reporterTwo:Reporter = ReporterFactory.create();
+       reporterTwo.attachTo(timesOfIndia);
 
-        value = basicCal.performOperation(COMMAND_CONST.MULTIPLY, 30);
-        console.log(value);
+       let subscriberOne:Subscriber = SubscriberFactory.create("Vijay");
+       timesOfIndia.subscribe(subscriberOne)
 
-        value = basicCal.undoOperation();
-        console.log(value);
+       let subscriberTwo:Subscriber = SubscriberFactory.create("Raj");
+       timesOfIndia.subscribe(subscriberTwo);
+
+
+       reporterOne.notifyNews("PM Modi to visit UP CM today");
+       reporterTwo.notifyNews("Rahul Gandhi is on amarnath yatra");
 
     }
 }   
